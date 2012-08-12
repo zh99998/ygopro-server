@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>用户注册</title>
+<style>
+	*{font-size:14px};
+.STYLE1 {color: #FF0000}
+.STYLE2 {color: #003399}
+.STYLE4 {color: #009999}
+</style>
+<script>
+	var serverurl='http://sh.convnet.net:7922/';
+	var changepass=false;
+	function postOrder(){
+		var order='';
+		if (document.getElementById("username").value=='') {
+			alert('用户名不得为空');
+			return;
+		}
+		if (document.getElementById("username").value.indexOf("$")>=0){
+			alert('用户名不得包含$');
+			return;
+		}
+		if (document.getElementById("username").value.indexOf("=")>=0){
+			alert('用户名不得包含等于号');
+			return;
+		}
+		if (document.getElementById("password").value=='') {
+			alert('密码不得为空');
+			return;
+		}
+		if (document.getElementById("password").value!=document.getElementById("password2").value) {
+			alert('两次输入的密码不匹配');
+			return;
+		}
+		if (document.getElementById("username").value.length+document.getElementById("password").value.length>18)
+		{
+			alert('用户名密码的总长度不得超过18个字符');
+			return;
+		}
+		if (changepass){
+			this.location=serverurl+'?userregist=CHANGEPASS&username='+encodeURIComponent(document.getElementById("username").value)+'&password='+encodeURIComponent(document.getElementById("password").value)+'&oldpass='+encodeURIComponent(document.getElementById("oldpass").value);
+		}
+		else
+		{
+		this.location=serverurl+'?userregist=NEW&username='+encodeURIComponent(document.getElementById("username").value)+'&password='+encodeURIComponent(document.getElementById("password").value);
+		}
+	}
+	
+	function showchange(){
+		if (document.getElementById('checkbox').checked)
+		{
+			changepass=true;
+			document.getElementById('changepass').style.display='';
+			}
+		else
+		{
+			changepass=false;
+			document.getElementById('changepass').style.display='none';
+		}
+	}
+</script>
+</head>
+
+<body>
+<p><img src="http://sh.convnet.net:7955/logo/1.jpg" /></IMG><br />
+</p>
+<p>用户注册说明：用户名和密码长度总和不得超过18个字符 ，用户名不得包含“$”以及“=” 号，否则无法登陆，其他无限制</p>
+<p>用户名：
+  <input type="text" name="username" id="username"  style="width:120px;"/>
+  <input type="checkbox" name="checkbox" id="checkbox" onclick="showchange()"/>
+修改密码
+<div style="display:none; float:left" id="changepass"> 旧密码：
+<input type="password" name="oldpass" id="oldpass" style="width:120px;"/></div>
+  <p>密　码： 
+    <input type="password" name="password" id="password" style="width:120px;"/>
+  确认密码：
+  <input type="password" name="password" id="password2" style="width:120px;"/>
+  <input type="submit" name="button" id="button" value="提交" onclick="postOrder()" />
+</p>
+  <p>登录请使用用户名+'$'+密码的方式 ：如用户：<span class="STYLE2">★FH★ YUYUHASO</span>密码<span class="STYLE4">123</span>，在昵称中填写<span class="STYLE2">  ★FH★ YUYUHASO</span><span style="color:#FF0000">$</span><span class="STYLE4">123</span>即可通过认证 </p>
+<p>服务器开放注册时间见群通知</p>
+</body>
+
+</html>
