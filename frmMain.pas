@@ -63,7 +63,7 @@ type
     iskeepversion:boolean;
     lasthttpget:tdatetime;
     lastjsonget:tdatetime;
-    lasthttpgetString,lastjsongetString:string;
+    lasthttpgetString,lastjsongetstring_delphi,lastjsongetString:string;
     needcache:boolean;
   end;
 
@@ -423,12 +423,12 @@ begin
           begin
             if not tuserinfo(acontext).connected then exit; 
             //Memo1.Lines.Add(tDuelRoom(recv^).password2name);
-            //版本确认1026
+            //版本确认102C
             //showmessage(inttostr(ord(tDuelRoom(recv^).seed[0])));
             if not ((ord(tDuelRoom(recv^).seed[1])=18)
-              and (ord(tDuelRoom(recv^).seed[0])=128)) then
+              and (ord(tDuelRoom(recv^).seed[0])=208)) then
             begin
-              tuserinfo(acontext).postandexit('版本10280，请确认');
+              tuserinfo(acontext).postandexit('版本102D0，请确认');
               //memo1.Lines.Add(tuserinfo(AContext).username+'dissconnect 版本不正确');
              // acontext.Connection.Disconnect;
               exit;
@@ -697,7 +697,10 @@ begin
 
          if (SecondsBetween(now,lastjsonget)<2) and needcache then
          begin
-            AResponseInfo.ContentText:=lastjsongetstring;
+            if transcode then
+              AResponseInfo.ContentText:=lastjsongetstring
+            else
+              AResponseInfo.ContentText:=lastjsongetstring_delphi;
             exit;
          end;
          
@@ -735,7 +738,10 @@ begin
                        AResponseInfo.ContentText:=AResponseInfo.ContentText+',"istart":"wait"}';
                 end;
                 AResponseInfo.ContentText:=AResponseInfo.ContentText+']}';
-                lastjsongetstring:=AResponseInfo.ContentText;
+                if transcode then
+                  lastjsongetstring:=AResponseInfo.ContentText
+                else
+                  lastjsongetstring_delphi:=AResponseInfo.ContentText;
                 lastjsonget:=now();
                // AResponseInfo.ContentText:=UnicodeEncode(AResponseInfo.ContentText,CP_OEMCP);
              finally
